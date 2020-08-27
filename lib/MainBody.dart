@@ -1,9 +1,12 @@
-import 'package:bmi_calculator/ReusableCard.dart';
-import 'package:bmi_calculator/IconContent.dart';
-import 'package:bmi_calculator/results_page.dart';
+import 'file:///D:/Work/Flutter/bmi-calculator-flutter/lib/components/ReusableCard.dart';
+import 'file:///D:/Work/Flutter/bmi-calculator-flutter/lib/components/IconContent.dart';
+import 'file:///D:/Work/Flutter/bmi-calculator-flutter/lib/screens/results_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'constants.dart';
+import 'components/bottom_button.dart';
+import 'components/round_icon_button.dart';
+import 'calculator_brain.dart';
 
 enum Gender {
   male,female,
@@ -193,45 +196,25 @@ class _MainBodyState extends State<MainBody> {
               ],
             ),
         ),
-        GestureDetector(
+        BottomButton(
+          buttonTitle: 'CALCULATE',
           onTap: (){
+            CalculatorBrain calc = CalculatorBrain(height: height, weight: weight);
             Navigator.push(
               context,
-              MaterialPageRoute(builder:(context)=> ResultsPage()),
+              MaterialPageRoute(
+                builder: (context) => ResultsPage(
+                  bmiResult: calc.calculateBMI(),
+                  resultText: calc.getResult(),
+                  interpretation: calc.getInterpretation(),
+                ),
+              ),
             );
-          },
-          child: Container(
-            child: Center(child: Text('CALCULATE', style: kLargeButtonTextStyle,)),
-            color: kBottomContainerColor,
-            margin: EdgeInsets.only(top: 10.0),
-            width: double.infinity,
-            height: kBottomContainerHeight,
-          ),
+            },
         ),
       ],
     );
   }
 }
 
-class RoundIconButton extends StatelessWidget {
-  RoundIconButton({@required this.icon, @required this.onPressed});
-
-  final IconData icon;
-  final Function onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return RawMaterialButton(
-      child: Icon(icon),
-      onPressed: onPressed,
-      elevation: 6.0,
-      constraints: BoxConstraints.tightFor(
-        width: 56.0,
-        height: 56.0,
-      ),
-      shape: CircleBorder(),
-      fillColor: Color(0xFF4C4F5E),
-    );
-  }
-}
 
